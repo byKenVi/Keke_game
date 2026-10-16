@@ -1,0 +1,201 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Design system — ambiance sombre & romantique.
+   Fond bordeaux / bleu nuit, accents or & rose, Playfair + Inter.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Fonds */
+  --bg-0: #140610; /* bordeaux presque noir */
+  --bg-1: #1b0a18;
+  --bg-2: #0e0a1e; /* bleu nuit profond */
+
+  /* Surfaces (cartes, panneaux) */
+  --surface: #241020;
+  --surface-hi: #2e1529;
+  --border: rgba(255, 228, 196, 0.1);
+  --border-hi: rgba(255, 228, 196, 0.22);
+
+  /* Texte */
+  --text: #f4e9df;
+  --text-soft: #cbb6ae;
+  --text-dim: #8f7a78;
+
+  /* Accents */
+  --gold: #e3c285;
+  --gold-hi: #f3dca6;
+  --gold-deep: #b98a46;
+  --rose: #e79ab0;
+  --rose-deep: #c76d8b;
+
+  /* Couleurs des catégories (badges) */
+  --c-connaissance: #86b8c9;
+  --c-profonde: #b7a4e0;
+  --c-gage: #9fcfa6;
+  --c-audacieux: #e8899f;
+  --c-raconte: #e3c285;
+
+  /* Ombres & rayons */
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  --shadow-card: 0 30px 60px -20px rgba(0, 0, 0, 0.75), 0 0 0 1px var(--border);
+
+  --font-title: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Marge de sécurité (encoches iPhone) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg-0);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden; /* plein écran, pas de scroll global */
+  overscroll-behavior: none;
+}
+
+#app {
+  /* Dégradé romantique multi-points + voile sombre. */
+  background:
+    radial-gradient(120% 80% at 18% 0%, rgba(199, 109, 139, 0.18), transparent 55%),
+    radial-gradient(130% 90% at 90% 15%, rgba(120, 90, 200, 0.16), transparent 55%),
+    radial-gradient(120% 100% at 50% 110%, rgba(227, 194, 133, 0.1), transparent 60%),
+    linear-gradient(160deg, var(--bg-1) 0%, var(--bg-0) 45%, var(--bg-2) 100%);
+  min-height: 100%;
+}
+
+/* Conteneur plein écran, centré, largeur téléphone max. */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--safe-top) + 20px) 20px calc(var(--safe-bottom) + 24px);
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* Typo */
+h1,
+h2,
+h3 {
+  font-family: var(--font-title);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+}
+
+/* ── Boutons ─────────────────────────────────────────────────────────── */
+button {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text);
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 0 22px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: 0.01em;
+  transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.2s ease,
+    border-color 0.2s ease, opacity 0.2s ease;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* Bouton principal : or lumineux. */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-hi), var(--gold-deep));
+  color: #2a160a;
+  box-shadow: 0 14px 30px -12px rgba(227, 194, 133, 0.65);
+}
+
+/* Bouton secondaire : contour discret. */
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-hi);
+  color: var(--text);
+}
+.btn-ghost:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Lien texte doré. */
+a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+/* Accessibilité : réduction des animations si demandé. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Transitions de changement d'écran. */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+.fade-leave-active {
+  position: absolute;
+  inset: 0;
+}
+
+/* Flip de carte (retournement doux). */
+.flip-enter-active {
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.4s ease;
+}
+.flip-leave-active {
+  transition: transform 0.32s ease, opacity 0.3s ease;
+  position: absolute;
+  inset: 0;
+}
+.flip-enter-from {
+  transform: perspective(1400px) rotateY(-92deg);
+  opacity: 0;
+}
+.flip-leave-to {
+  transform: perspective(1400px) rotateY(80deg);
+  opacity: 0;
+}

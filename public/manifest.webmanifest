@@ -1,0 +1,25 @@
+{
+  "name": "Pour Kékéli",
+  "short_name": "Kékéli",
+  "description": "Un jeu de cartes rien que pour nous deux.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#140610",
+  "theme_color": "#180711",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
