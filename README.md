@@ -79,7 +79,7 @@ Ajoute un objet `german` (une traduction à révéler + un petit mot) :
 
 ## Déployer sur Vercel (< 5 min)
 
-### Option A — depuis GitHub (recommandé)
+### Option A : depuis GitHub (recommandé)
 
 1. Pousse le projet sur un dépôt GitHub.
 2. Va sur [vercel.com](https://vercel.com) → **Add New… → Project** → importe le dépôt.
@@ -88,7 +88,7 @@ Ajoute un objet `german` (une traduction à révéler + un petit mot) :
    - **Output Directory** : `dist`
 4. Clique **Deploy**. Chaque `git push` redéploie tout seul.
 
-### Option B — en ligne de commande
+### Option B : en ligne de commande
 
 ```bash
 npm i -g vercel

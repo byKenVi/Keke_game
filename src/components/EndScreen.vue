@@ -10,13 +10,13 @@ defineEmits<{ replay: [] }>()
       <h1 class="title">Merci, mon chou 💛</h1>
 
       <!-- ─────────────────────────────────────────────────────────────
-           Mot de fin de Kevin — modifie librement ce texte.
+           Mot de fin de Kevin (modifie librement ce texte).
            ───────────────────────────────────────────────────────────── -->
       <p class="message">
         Peu importe le score (il n'y en a pas, je sais). Ce que je retiens,
         c'est ta voix, tes rires, et toutes ces petites choses que tu m'as
         confiées ce soir. Je t'ai codé un jeu, mais c'est toi qui le rends
-        précieux. Reste au chaud contre moi — surtout toi.
+        précieux. Reste au chaud contre moi, surtout toi.
       </p>
 
       <div class="stat">

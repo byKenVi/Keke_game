@@ -42,7 +42,7 @@ const germanRevealed = ref(false)
       <span v-if="card.category === 'audacieux' && !card.secret" class="refusable">
         Toujours le droit de dire non.
       </span>
-      <span v-else-if="card.secret" class="refusable">— Kevin</span>
+      <span v-else-if="card.secret" class="refusable">Kevin</span>
     </footer>
   </article>
 </template>

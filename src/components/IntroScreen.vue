@@ -13,7 +13,7 @@ const emit = defineEmits<{ start: [] }>()
       </h1>
 
       <!-- ─────────────────────────────────────────────────────────────
-           Petit mot de Kevin — modifie ce texte à ta guise.
+           Petit mot de Kevin (modifie ce texte à ta guise).
            ───────────────────────────────────────────────────────────── -->
       <p class="note">
         J'ai codé ce petit jeu rien que pour nous. Pas de score, pas de

@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Un jeu de cartes pour un date — codé par Kevin, pour mon chou.",
+  "description": "Un jeu de cartes pour un date, codé par Kevin, pour mon chou.",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",

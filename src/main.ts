@@ -4,7 +4,7 @@ import App from './App.vue'
 
 createApp(App).mount('#app')
 
-// Enregistrement du service worker (PWA — add to home screen + hors-ligne).
+// Enregistrement du service worker (PWA : add to home screen + hors-ligne).
 // Uniquement en production, et sans bloquer le rendu.
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {

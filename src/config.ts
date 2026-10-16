@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────
-//  RÉGLAGES RAPIDES — modifie ici ce qui doit l'être.
+//  RÉGLAGES RAPIDES : modifie ici ce qui doit l'être.
 // ─────────────────────────────────────────────────────────────────────────
 
 /** Code d'accès de l'écran de verrouillage. Change-le si besoin. */
