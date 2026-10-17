@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useGame } from './composables/useGame'
-import { STORAGE_KEYS } from './config'
+import { SITE_LOCKED, STORAGE_KEYS } from './config'
+import LockedScreen from './components/LockedScreen.vue'
 import AccessScreen from './components/AccessScreen.vue'
 import IntroScreen from './components/IntroScreen.vue'
 import LevelSelect from './components/LevelSelect.vue'
@@ -46,7 +47,9 @@ function replay() {
 
 <template>
   <Transition name="fade" mode="out-in">
-    <AccessScreen v-if="screen === 'access'" key="access" @unlock="onUnlock" />
+    <LockedScreen v-if="SITE_LOCKED" key="locked" />
+
+    <AccessScreen v-else-if="screen === 'access'" key="access" @unlock="onUnlock" />
 
     <IntroScreen v-else-if="screen === 'intro'" key="intro" @start="screen = 'level'" />
 
