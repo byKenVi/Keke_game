@@ -48,6 +48,8 @@ export const cards: Card[] = [
   { id: 6, category: 'connaissance', level: 'soft', text: "C'est quoi ton plaisir coupable, celui que tu assumes à moitié ?" },
   { id: 7, category: 'connaissance', level: 'soft', text: "On part où si on pouvait partir demain, n'importe où ?" },
   { id: 10, category: 'connaissance', level: 'soft', text: "Tu fonctionnes plus à l'instinct ou à la raison ?" },
+  { id: 28, category: 'connaissance', level: 'soft', text: "C'est quoi le film que tu peux revoir sans jamais t'en lasser ?" },
+  { id: 29, category: 'connaissance', level: 'soft', text: "Un truc tout bête qui te rend heureuse à chaque fois ?" },
 
   // Medium
   { id: 12, category: 'connaissance', level: 'medium', text: "Qu'est-ce qui t'énerve le plus chez un homme ?" },
@@ -57,6 +59,8 @@ export const cards: Card[] = [
   { id: 16, category: 'connaissance', level: 'medium', text: "Quelle habitude chez moi te fait sourire, et laquelle t'agace ?" },
   { id: 17, category: 'connaissance', level: 'medium', text: "Tu me décrirais comment en une phrase à quelqu'un qui compte pour toi ?" },
   { id: 18, category: 'connaissance', level: 'medium', text: "Il y a une version de toi que presque personne connaît ?" },
+  { id: 30, category: 'connaissance', level: 'medium', text: "Qu'est-ce que tu n'avoues jamais en premier à quelqu'un ?" },
+  { id: 31, category: 'connaissance', level: 'medium', text: "Tu préfères qu'on te dise les choses cash ou en douceur ?" },
   {
     id: 27,
     category: 'connaissance',
@@ -74,11 +78,15 @@ export const cards: Card[] = [
   { id: 24, category: 'connaissance', level: 'hot', text: "Qu'est-ce que tu aimerais qu'on fasse plus souvent ?" },
   { id: 25, category: 'connaissance', level: 'hot', text: "La chose la plus sincère que tu as envie de me dire ce soir ?" },
   { id: 26, category: 'connaissance', level: 'hot', text: "Tu nous imagines comment d'ici la fin de l'année ?" },
+  { id: 32, category: 'connaissance', level: 'hot', text: "Qu'est-ce que tu remarques chez moi que les autres ne voient pas ?" },
+  { id: 33, category: 'connaissance', level: 'hot', text: "Qu'est-ce qui te fait craquer chez moi sans que tu l'aies décidé ?" },
 
   // ───────────────────────────── 🧠 PROFONDES ─────────────────────────────
   // Soft
   { id: 101, category: 'profonde', level: 'soft', text: "Quel rêve de gamine tu n'as jamais vraiment lâché ?" },
   { id: 102, category: 'profonde', level: 'soft', text: "Qu'est-ce qui te fait te sentir en sécurité avec quelqu'un ?" },
+  { id: 125, category: 'profonde', level: 'soft', text: "Qu'est-ce que tu aimerais qu'on comprenne de toi sans avoir à l'expliquer ?" },
+  { id: 126, category: 'profonde', level: 'soft', text: "C'est quoi une vie réussie, pour toi ?" },
 
   // Medium
   { id: 108, category: 'profonde', level: 'medium', text: "De quoi tu as le plus peur, vraiment ?" },
@@ -89,6 +97,9 @@ export const cards: Card[] = [
   { id: 113, category: 'profonde', level: 'medium', text: "Quelle partie de toi tu caches le plus souvent ?" },
   { id: 114, category: 'profonde', level: 'medium', text: "C'était quand, la dernière fois que tu t'es sentie incomprise ?" },
   { id: 115, category: 'profonde', level: 'medium', text: "Tu as besoin de quoi, concrètement, quand ça ne va pas ?" },
+  { id: 127, category: 'profonde', level: 'medium', text: "Qu'est-ce que tu as le plus de mal à te pardonner ?" },
+  { id: 128, category: 'profonde', level: 'medium', text: "Qu'est-ce qui te fait te sentir seule, même entourée ?" },
+  { id: 129, category: 'profonde', level: 'medium', text: "Tu crois qu'on choisit qui on aime, ou pas vraiment ?" },
 
   // Hot
   { id: 116, category: 'profonde', level: 'hot', text: "Tu attends quoi de l'amour, aujourd'hui ?" },
@@ -99,6 +110,9 @@ export const cards: Card[] = [
   { id: 121, category: 'profonde', level: 'hot', text: "Il y a une blessure du passé qui joue encore sur ta façon d'aimer ?" },
   { id: 122, category: 'profonde', level: 'hot', text: "Si tu devais me confier une peur sur nous, ce serait laquelle ?" },
   { id: 124, category: 'profonde', level: 'hot', text: "Dis-moi un truc que tu n'as jamais dit à voix haute." },
+  { id: 130, category: 'profonde', level: 'hot', text: "Qu'est-ce que tu n'as jamais osé attendre de quelqu'un ?" },
+  { id: 131, category: 'profonde', level: 'hot', text: "Si tu pouvais être sûre d'une seule chose sur nous, ce serait laquelle ?" },
+  { id: 132, category: 'profonde', level: 'hot', text: "Qu'est-ce qu'il te faudrait pour me faire totalement confiance ?" },
 
   // ───────────────────────────── 🎭 GAGES ─────────────────────────────
   // Medium
@@ -111,17 +125,23 @@ export const cards: Card[] = [
   { id: 222, category: 'gage', level: 'hot', text: "Dis-moi tout bas la pensée la moins sage que tu as eue ce soir." },
   { id: 224, category: 'gage', level: 'hot', text: "Avant qu'on se quitte, vole-moi un baiser quand je m'y attends le moins." },
   { id: 225, category: 'gage', level: 'hot', text: "Dis-moi tout bas ce que tu as en tête pour la fin de la soirée." },
+  { id: 226, category: 'gage', level: 'hot', text: "Choisis : un baiser maintenant, ou un secret. Pas les deux." },
 
   // ───────────────────────────── 💋 AUDACIEUX ─────────────────────────────
   // Soft
   { id: 301, category: 'audacieux', level: 'soft', text: "Qu'est-ce que tu préfères dans mon regard ?" },
   { id: 305, category: 'audacieux', level: 'soft', text: "Dis-moi un compliment que tu gardais pour toi." },
   { id: 306, category: 'audacieux', level: 'soft', text: "C'était quand, la première fois que tu m'as trouvé attirant ?" },
+  { id: 327, category: 'audacieux', level: 'soft', text: "C'est quoi le détail chez moi que tu regardes sans que je le sache ?" },
+  { id: 328, category: 'audacieux', level: 'soft', text: "Finis la phrase, tout bas : ce soir, j'ai envie que tu…" },
 
   // Medium
   { id: 309, category: 'audacieux', level: 'medium', text: "Chuchote-moi ce dont tu as envie pour quand on sera seuls." },
   { id: 311, category: 'audacieux', level: 'medium', text: "Décris-moi le baiser parfait, à voix basse." },
   { id: 312, category: 'audacieux', level: 'medium', text: "Dis-moi trois trucs chez moi que tu trouves irrésistibles." },
+  { id: 329, category: 'audacieux', level: 'medium', text: "Chuchote-moi le moment de la soirée que tu ne vas pas oublier." },
+  { id: 330, category: 'audacieux', level: 'medium', text: "Dis-moi à l'oreille ce que tu ferais si personne ne nous regardait." },
+  { id: 331, category: 'audacieux', level: 'medium', text: "Approche-toi et dis-moi ce que tu gardes pour toi depuis tout à l'heure." },
 
   // Hot
   { id: 316, category: 'audacieux', level: 'hot', text: "Murmure-moi la pensée la plus osée que tu as eue de moi ce soir." },
@@ -130,11 +150,16 @@ export const cards: Card[] = [
   { id: 323, category: 'audacieux', level: 'hot', text: "Si c'était toi qui décidais de tout, la soirée finit comment ? Dis-le tout bas." },
   { id: 324, category: 'audacieux', level: 'hot', text: "Approche-toi comme pour m'embrasser. Et décide si tu me fais attendre." },
   { id: 326, category: 'audacieux', level: 'hot', text: "Dis-moi une limite que tu ne veux pas franchir ce soir." },
+  { id: 332, category: 'audacieux', level: 'hot', text: "Décris-moi, à voix basse, comment tu voudrais que je t'embrasse." },
+  { id: 333, category: 'audacieux', level: 'hot', text: "Dis-moi tout bas jusqu'où tu as envie d'aller ce soir." },
+  { id: 334, category: 'audacieux', level: 'hot', text: "Les yeux dans les yeux, dis-moi ce dont tu as le plus envie là, maintenant." },
 
   // ───────────────────────────── 🎲 RACONTE-MOI ─────────────────────────────
   // Soft
   { id: 401, category: 'raconte', level: 'soft', text: "Raconte-moi ta journée comme si c'était le début d'un film." },
   { id: 404, category: 'raconte', level: 'soft', text: "Raconte-moi une décision que tu as prise seule et dont tu es fière." },
+  { id: 426, category: 'raconte', level: 'soft', text: "Raconte-moi ton plus beau souvenir d'enfance." },
+  { id: 427, category: 'raconte', level: 'soft', text: "Raconte-moi un endroit où tu te sens parfaitement bien." },
 
   // Medium
   { id: 408, category: 'raconte', level: 'medium', text: "Raconte-moi la fois où tu t'es sentie la plus courageuse." },
@@ -143,6 +168,7 @@ export const cards: Card[] = [
   { id: 412, category: 'raconte', level: 'medium', text: "Raconte-moi la dernière fois que tu as pleuré." },
   { id: 414, category: 'raconte', level: 'medium', text: "Raconte-moi une rencontre qui a changé ta façon de voir les choses." },
   { id: 425, category: 'raconte', level: 'medium', text: "Raconte-moi le meilleur conseil qu'on t'ait donné. Tu l'as suivi ?" },
+  { id: 428, category: 'raconte', level: 'medium', text: "Raconte-moi la fois où tu as osé un truc qui te faisait peur." },
 
   // Hot
   { id: 415, category: 'raconte', level: 'hot', text: "Raconte-moi le moment où tu as su que tu tenais à moi." },
@@ -160,6 +186,9 @@ export const cards: Card[] = [
   { id: 422, category: 'raconte', level: 'hot', text: "Raconte-moi comment tu voudrais que je m'y prenne pour te séduire de zéro." },
   { id: 423, category: 'raconte', level: 'hot', text: "Invente-nous une histoire : nous deux dans dix ans, un soir comme ça." },
   { id: 424, category: 'raconte', level: 'hot', text: "Raconte-moi une envie que tu n'as encore dite à personne." },
+  { id: 429, category: 'raconte', level: 'hot', text: "Raconte-moi la première fois que tu as pensé à moi en souriant toute seule." },
+  { id: 430, category: 'raconte', level: 'hot', text: "Raconte-moi ce que tu as ressenti la première fois qu'on s'est tenu la main." },
+  { id: 431, category: 'raconte', level: 'hot', text: "Raconte-moi la soirée que tu aimerais qu'on vive, sans rien censurer." },
 
   // ───────────────────────────── ✨ CARTE CACHÉE ─────────────────────────────
   // Déclenchée en tapant 5 fois sur le titre, en jeu. N'apparaît jamais au tirage.

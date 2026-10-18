@@ -194,7 +194,7 @@ function levelMeta(levelKey: string) {
         <span class="stat del">✕ {{ r.deletedCount.value }}</span>
       </div>
       <div class="bar">
-        <div class="bar-fill" :style="{ width: (r.decidedCount.value / r.total) * 100 + '%' }" />
+        <div class="bar-fill" :style="{ width: (r.total ? (r.decidedCount.value / r.total) * 100 : 0) + '%' }" />
       </div>
     </header>
 

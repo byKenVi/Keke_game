@@ -92,21 +92,25 @@ const summaries = computed(() => [
         v-for="s in summaries"
         :key="s.key"
         class="choice"
+        :class="{ empty: s.total === 0 }"
+        :disabled="s.total === 0"
         @click="mode = s.key"
       >
         <span class="choice-emoji">{{ s.emoji }}</span>
         <span class="choice-body">
           <span class="choice-title">{{ s.title }}</span>
-          <span class="choice-sub">{{ s.subtitle }}</span>
-          <span class="choice-meta">
-            {{ s.decided }} / {{ s.total }} triées
-            <template v-if="s.decided > 0"> · {{ s.kept }} gardées</template>
-          </span>
-          <span class="choice-bar">
-            <span class="choice-bar-fill" :style="{ width: (s.decided / s.total) * 100 + '%' }" />
-          </span>
+          <span class="choice-sub">{{ s.total === 0 ? 'Aucun lot à trier pour le moment.' : s.subtitle }}</span>
+          <template v-if="s.total > 0">
+            <span class="choice-meta">
+              {{ s.decided }} / {{ s.total }} triées
+              <template v-if="s.decided > 0"> · {{ s.kept }} gardées</template>
+            </span>
+            <span class="choice-bar">
+              <span class="choice-bar-fill" :style="{ width: (s.decided / s.total) * 100 + '%' }" />
+            </span>
+          </template>
         </span>
-        <span class="choice-arrow">›</span>
+        <span v-if="s.total > 0" class="choice-arrow">›</span>
       </button>
     </div>
   </div>
@@ -205,6 +209,9 @@ const summaries = computed(() => [
 }
 .choice:active {
   transform: scale(0.99);
+}
+.choice.empty {
+  opacity: 0.55;
 }
 .choice-emoji {
   font-size: 1.8rem;
