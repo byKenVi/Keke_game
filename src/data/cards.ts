@@ -109,7 +109,6 @@ export const cards: Card[] = [
   { id: 120, category: 'profonde', level: 'hot', text: "Qu'est-ce que tu espères qu'on se dira encore dans dix ans ?" },
   { id: 121, category: 'profonde', level: 'hot', text: "Il y a une blessure du passé qui joue encore sur ta façon d'aimer ?" },
   { id: 122, category: 'profonde', level: 'hot', text: "Si tu devais me confier une peur sur nous, ce serait laquelle ?" },
-  { id: 124, category: 'profonde', level: 'hot', text: "Dis-moi un truc que tu n'as jamais dit à voix haute." },
   { id: 130, category: 'profonde', level: 'hot', text: "Qu'est-ce que tu n'as jamais osé attendre de quelqu'un ?" },
   { id: 131, category: 'profonde', level: 'hot', text: "Si tu pouvais être sûre d'une seule chose sur nous, ce serait laquelle ?" },
   { id: 132, category: 'profonde', level: 'hot', text: "Qu'est-ce qu'il te faudrait pour me faire totalement confiance ?" },
@@ -132,7 +131,6 @@ export const cards: Card[] = [
   { id: 301, category: 'audacieux', level: 'soft', text: "Qu'est-ce que tu préfères dans mon regard ?" },
   { id: 305, category: 'audacieux', level: 'soft', text: "Dis-moi un compliment que tu gardais pour toi." },
   { id: 306, category: 'audacieux', level: 'soft', text: "C'était quand, la première fois que tu m'as trouvé attirant ?" },
-  { id: 327, category: 'audacieux', level: 'soft', text: "C'est quoi le détail chez moi que tu regardes sans que je le sache ?" },
   { id: 328, category: 'audacieux', level: 'soft', text: "Finis la phrase, tout bas : ce soir, j'ai envie que tu…" },
 
   // Medium
@@ -146,13 +144,10 @@ export const cards: Card[] = [
   // Hot
   { id: 316, category: 'audacieux', level: 'hot', text: "Murmure-moi la pensée la plus osée que tu as eue de moi ce soir." },
   { id: 320, category: 'audacieux', level: 'hot', text: "Les yeux dans les yeux, dis-moi un truc que tu ne dirais à personne d'autre." },
-  { id: 321, category: 'audacieux', level: 'hot', text: "Promets-moi à l'oreille un truc précis pour quand on sera seuls." },
-  { id: 323, category: 'audacieux', level: 'hot', text: "Si c'était toi qui décidais de tout, la soirée finit comment ? Dis-le tout bas." },
   { id: 324, category: 'audacieux', level: 'hot', text: "Approche-toi comme pour m'embrasser. Et décide si tu me fais attendre." },
   { id: 326, category: 'audacieux', level: 'hot', text: "Dis-moi une limite que tu ne veux pas franchir ce soir." },
   { id: 332, category: 'audacieux', level: 'hot', text: "Décris-moi, à voix basse, comment tu voudrais que je t'embrasse." },
   { id: 333, category: 'audacieux', level: 'hot', text: "Dis-moi tout bas jusqu'où tu as envie d'aller ce soir." },
-  { id: 334, category: 'audacieux', level: 'hot', text: "Les yeux dans les yeux, dis-moi ce dont tu as le plus envie là, maintenant." },
 
   // ───────────────────────────── 🎲 RACONTE-MOI ─────────────────────────────
   // Soft
@@ -181,14 +176,10 @@ export const cards: Card[] = [
   },
   { id: 418, category: 'raconte', level: 'hot', text: "Raconte-moi un moment où tu as eu très envie de m'embrasser sans le faire." },
   { id: 419, category: 'raconte', level: 'hot', text: "Raconte-moi ce que ça te fait quand je te fixe un peu trop longtemps." },
-  { id: 420, category: 'raconte', level: 'hot', text: "Raconte-moi la soirée dont tu gardes le meilleur souvenir avec moi." },
   { id: 421, category: 'raconte', level: 'hot', text: "Raconte-moi ce que tu dirais de moi à ta meilleure amie, sans filtre." },
   { id: 422, category: 'raconte', level: 'hot', text: "Raconte-moi comment tu voudrais que je m'y prenne pour te séduire de zéro." },
-  { id: 423, category: 'raconte', level: 'hot', text: "Invente-nous une histoire : nous deux dans dix ans, un soir comme ça." },
   { id: 424, category: 'raconte', level: 'hot', text: "Raconte-moi une envie que tu n'as encore dite à personne." },
-  { id: 429, category: 'raconte', level: 'hot', text: "Raconte-moi la première fois que tu as pensé à moi en souriant toute seule." },
   { id: 430, category: 'raconte', level: 'hot', text: "Raconte-moi ce que tu as ressenti la première fois qu'on s'est tenu la main." },
-  { id: 431, category: 'raconte', level: 'hot', text: "Raconte-moi la soirée que tu aimerais qu'on vive, sans rien censurer." },
 
   // ───────────────────────────── ✨ CARTE CACHÉE ─────────────────────────────
   // Déclenchée en tapant 5 fois sur le titre, en jeu. N'apparaît jamais au tirage.
