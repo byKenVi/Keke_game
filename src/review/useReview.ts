@@ -4,10 +4,14 @@
 // ─────────────────────────────────────────────────────────────────────────
 import { computed, reactive, watch } from 'vue'
 import { cards as sourceCards } from '../data/cards'
+import { proposals as sourceProposals } from '../data/proposals'
 import { STORAGE_KEYS } from '../config'
 import type { Card } from '../types'
 
 export type Verdict = 'keep' | 'delete'
+
+/** Les deux lots triables : les cartes du jeu, ou les nouvelles propositions. */
+export type ReviewMode = 'game' | 'proposals'
 
 /** Une décision prise sur une carte. */
 export interface Decision {
@@ -23,12 +27,14 @@ interface PersistedState {
   decisions: Record<number, Decision>
 }
 
-/** Liste de travail : toutes les cartes, dans l'ordre du fichier. */
-const reviewList: Card[] = sourceCards.slice()
+const SOURCES: Record<ReviewMode, { list: Card[]; storageKey: string }> = {
+  game: { list: sourceCards.slice(), storageKey: STORAGE_KEYS.reviewState },
+  proposals: { list: sourceProposals.slice(), storageKey: STORAGE_KEYS.reviewProposals },
+}
 
-function load(): PersistedState {
+function load(storageKey: string): PersistedState {
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.reviewState)
+    const raw = localStorage.getItem(storageKey)
     if (raw) {
       const parsed = JSON.parse(raw) as Partial<PersistedState>
       return {
@@ -42,22 +48,32 @@ function load(): PersistedState {
   return { index: 0, decisions: {} }
 }
 
-const state = reactive<PersistedState>(load())
+// Un état réactif par mode, créé une seule fois (watcher de sauvegarde inclus).
+const states: Partial<Record<ReviewMode, PersistedState>> = {}
+function stateFor(mode: ReviewMode): PersistedState {
+  let s = states[mode]
+  if (!s) {
+    const { storageKey } = SOURCES[mode]
+    s = reactive<PersistedState>(load(storageKey))
+    watch(
+      s,
+      (val) => {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(val))
+        } catch {
+          /* pas grave : on perd juste la reprise de session */
+        }
+      },
+      { deep: true },
+    )
+    states[mode] = s
+  }
+  return s
+}
 
-// Sauvegarde automatique à chaque changement.
-watch(
-  state,
-  (s) => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.reviewState, JSON.stringify(s))
-    } catch {
-      /* pas grave : on perd juste la reprise de session */
-    }
-  },
-  { deep: true },
-)
-
-export function useReview() {
+export function useReview(mode: ReviewMode = 'game') {
+  const reviewList = SOURCES[mode].list
+  const state = stateFor(mode)
   const total = reviewList.length
 
   const current = computed<Card | null>(() =>
@@ -175,6 +191,7 @@ export function useReview() {
 
     return {
       generatedAt: new Date().toISOString(),
+      mode,
       total,
       decided: decidedCount.value,
       kept: keptCount.value,

@@ -38,4 +38,5 @@ export const STORAGE_KEYS = {
   autoEscalate: 'kekeli:autoEscalate',
   reviewUnlocked: 'kekeli:review:unlocked',
   reviewState: 'kekeli:review:v1',
+  reviewProposals: 'kekeli:review:proposals:v1',
 } as const

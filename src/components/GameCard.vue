@@ -117,6 +117,7 @@ const germanRevealed = ref(false)
   line-height: 1.34;
   color: var(--text);
   text-wrap: balance;
+  white-space: pre-line;
 }
 
 .german {
