@@ -25,6 +25,8 @@ export interface Decision {
 interface PersistedState {
   index: number
   decisions: Record<number, Decision>
+  /** Signature du lot : si le contenu change, on repart à zéro. */
+  sig: string
 }
 
 const SOURCES: Record<ReviewMode, { list: Card[]; storageKey: string }> = {
@@ -32,20 +34,36 @@ const SOURCES: Record<ReviewMode, { list: Card[]; storageKey: string }> = {
   proposals: { list: sourceProposals.slice(), storageKey: STORAGE_KEYS.reviewProposals },
 }
 
-function load(storageKey: string): PersistedState {
+/**
+ * Empreinte du lot (ids + textes). Dès qu'une carte change, est ajoutée ou
+ * retirée, la signature change : la progression sauvegardée d'un ancien lot
+ * (ou d'une ancienne version du jeu) ne s'applique plus et on repart propre.
+ */
+function signatureOf(list: Card[]): string {
+  const s = list.map((c) => c.id + '|' + c.text).join('§')
+  let h = 0
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0
+  return list.length + ':' + (h >>> 0).toString(36)
+}
+
+function load(storageKey: string, sig: string): PersistedState {
   try {
     const raw = localStorage.getItem(storageKey)
     if (raw) {
       const parsed = JSON.parse(raw) as Partial<PersistedState>
-      return {
-        index: typeof parsed.index === 'number' ? parsed.index : 0,
-        decisions: parsed.decisions ?? {},
+      // On ne reprend la sauvegarde que si elle correspond au lot actuel.
+      if (parsed.sig === sig) {
+        return {
+          index: typeof parsed.index === 'number' ? parsed.index : 0,
+          decisions: parsed.decisions ?? {},
+          sig,
+        }
       }
     }
   } catch {
     /* stockage indisponible ou JSON cassé : on repart à zéro */
   }
-  return { index: 0, decisions: {} }
+  return { index: 0, decisions: {}, sig }
 }
 
 // Un état réactif par mode, créé une seule fois (watcher de sauvegarde inclus).
@@ -53,8 +71,8 @@ const states: Partial<Record<ReviewMode, PersistedState>> = {}
 function stateFor(mode: ReviewMode): PersistedState {
   let s = states[mode]
   if (!s) {
-    const { storageKey } = SOURCES[mode]
-    s = reactive<PersistedState>(load(storageKey))
+    const { list, storageKey } = SOURCES[mode]
+    s = reactive<PersistedState>(load(storageKey, signatureOf(list)))
     watch(
       s,
       (val) => {
@@ -86,15 +104,19 @@ export function useReview(mode: ReviewMode = 'game') {
   const finished = computed(() => state.index >= total)
   const position = computed(() => Math.min(state.index + 1, total))
 
-  const decidedCount = computed(() => Object.keys(state.decisions).length)
+  // Les compteurs ne portent que sur les cartes réellement dans le lot actuel
+  // (une décision orpheline d'un ancien lot ne gonfle jamais le total).
+  const decidedCount = computed(
+    () => reviewList.reduce((n, c) => n + (state.decisions[c.id] ? 1 : 0), 0),
+  )
   const keptCount = computed(
-    () => Object.values(state.decisions).filter((d) => d.verdict === 'keep').length,
+    () => reviewList.reduce((n, c) => n + (state.decisions[c.id]?.verdict === 'keep' ? 1 : 0), 0),
   )
   const deletedCount = computed(
-    () => Object.values(state.decisions).filter((d) => d.verdict === 'delete').length,
+    () => reviewList.reduce((n, c) => n + (state.decisions[c.id]?.verdict === 'delete' ? 1 : 0), 0),
   )
   const editedCount = computed(
-    () => Object.values(state.decisions).filter((d) => d.edited).length,
+    () => reviewList.reduce((n, c) => n + (state.decisions[c.id]?.edited ? 1 : 0), 0),
   )
 
   /** Enregistre une décision sur la carte courante et avance. */
