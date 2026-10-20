@@ -24,6 +24,15 @@ export const ACCESS_CODE = '2105'
  */
 export const REVIEW_CODE = '0000'
 
+/**
+ * Code d'accès admin : permet de JOUER même quand le site est verrouillé
+ * (SITE_LOCKED = true), sans le déverrouiller pour elle.
+ * Deux façons d'entrer :
+ *   • ouvrir l'URL avec `?admin=LECODE` (ex. kkgame.vercel.app/?admin=1234)
+ *   • sur l'écran verrouillé, taper 5 fois sur le 💛 puis entrer le code.
+ */
+export const ADMIN_CODE = '1234'
+
 /** Prénom / surnom affichés un peu partout. */
 export const HER_NAME = 'Kékéli'
 export const HER_NICKNAME = 'mon chou'
@@ -37,6 +46,7 @@ export const STORAGE_KEYS = {
   level: 'kekeli:level',
   autoEscalate: 'kekeli:autoEscalate',
   haptics: 'kekeli:haptics',
+  adminUnlocked: 'kekeli:admin',
   reviewUnlocked: 'kekeli:review:unlocked',
   reviewState: 'kekeli:review:v1',
   reviewProposals: 'kekeli:review:proposals:v1',
