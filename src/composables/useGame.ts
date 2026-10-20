@@ -34,7 +34,12 @@ interface GameState {
   playedCount: number
   /** Ids déjà tirés, pour le tirage aléatoire sans répétition. */
   seen: Set<number>
+  /** Ids mis en favori pendant la soirée (coups de cœur). */
+  favorites: Set<number>
 }
+
+/** Index id → carte, pour retrouver un favori par son id. */
+const cardById = new Map<number, Card>(playableCards.map((c) => [c.id, c]))
 
 const initialLevel = (readStorage(STORAGE_KEYS.level) as Level | null) ?? 'soft'
 const initialAuto = readStorage(STORAGE_KEYS.autoEscalate) === 'true'
@@ -46,6 +51,7 @@ const state = reactive<GameState>({
   pos: -1,
   playedCount: 0,
   seen: new Set<number>(),
+  favorites: new Set<number>(),
 })
 
 /** Carte actuellement affichée (ou null avant le premier tirage). */
@@ -54,6 +60,16 @@ const currentCard = computed<Card | null>(() =>
 )
 
 const canGoBack = computed(() => state.pos > 0)
+
+/** La carte courante est-elle en favori ? */
+const currentIsFavorite = computed(
+  () => !!currentCard.value && state.favorites.has(currentCard.value.id),
+)
+
+/** Cartes mises en favori, dans l'ordre d'ajout (pour le récap de fin). */
+const favoriteCards = computed<Card[]>(() =>
+  [...state.favorites].map((id) => cardById.get(id)).filter((c): c is Card => !!c),
+)
 
 /** Tire une carte aléatoire du niveau courant, jamais vue de préférence. */
 function pickCard(): Card {
@@ -141,6 +157,18 @@ function setAutoEscalate(value: boolean): void {
   writeStorage(STORAGE_KEYS.autoEscalate, String(value))
 }
 
+/** Met / retire la carte courante des favoris. Renvoie le nouvel état. */
+function toggleFavorite(): boolean {
+  const card = currentCard.value
+  if (!card) return false
+  if (state.favorites.has(card.id)) {
+    state.favorites.delete(card.id)
+    return false
+  }
+  state.favorites.add(card.id)
+  return true
+}
+
 /** Easter egg : affiche la carte cachée « Kevin t'aime bien ». */
 function revealSecret(): void {
   if (currentCard.value?.id === secretCard.id) return
@@ -157,6 +185,7 @@ function reset(): void {
   state.pos = -1
   state.playedCount = 0
   state.seen = new Set<number>()
+  state.favorites = new Set<number>()
 }
 
 export function useGame() {
@@ -164,12 +193,15 @@ export function useGame() {
     state: readonly(state),
     currentCard,
     canGoBack,
+    currentIsFavorite,
+    favoriteCards,
     start,
     next,
     pass,
     back,
     setLevel,
     setAutoEscalate,
+    toggleFavorite,
     revealSecret,
     reset,
   }

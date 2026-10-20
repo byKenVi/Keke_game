@@ -69,6 +69,7 @@ function replay() {
       v-else
       key="end"
       :played-count="game.state.playedCount"
+      :favorites="game.favoriteCards.value"
       @replay="replay"
     />
   </Transition>

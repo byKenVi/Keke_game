@@ -36,6 +36,7 @@ export const STORAGE_KEYS = {
   unlocked: 'kekeli:unlocked',
   level: 'kekeli:level',
   autoEscalate: 'kekeli:autoEscalate',
+  haptics: 'kekeli:haptics',
   reviewUnlocked: 'kekeli:review:unlocked',
   reviewState: 'kekeli:review:v1',
   reviewProposals: 'kekeli:review:proposals:v1',

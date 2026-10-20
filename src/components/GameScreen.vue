@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useGame } from '../composables/useGame'
+import { useHaptics } from '../composables/useHaptics'
 import { LEVELS } from '../data/cards'
 import GameCard from './GameCard.vue'
 import LevelSelect from './LevelSelect.vue'
@@ -8,9 +9,117 @@ import LevelSelect from './LevelSelect.vue'
 const emit = defineEmits<{ finish: [] }>()
 
 const game = useGame()
+const { buzz } = useHaptics()
 
 const showLevelPanel = ref(false)
 const coldMessage = ref('')
+
+const cardKey = computed(() => game.currentCard.value?.id ?? -1)
+
+// ── Swipe de carte ───────────────────────────────────────────────────────
+const dragX = ref(0)
+const dragY = ref(0)
+const dragging = ref(false)
+const leaving = ref<null | 'next' | 'pass'>(null)
+const snap = ref(false)
+let startX = 0
+let startY = 0
+let pointerId: number | null = null
+
+const SWIPE_THRESHOLD = 110
+
+const rot = computed(() => dragX.value / 20)
+const hintNext = computed(() => dragX.value > 40)
+const hintPass = computed(() => dragX.value < -40)
+
+const swipeStyle = computed(() => {
+  if (leaving.value) {
+    const dir = leaving.value === 'next' ? 1 : -1
+    return {
+      transform: `translate(${dir * 520}px, 30px) rotate(${dir * 20}deg)`,
+      opacity: '0',
+      transition: 'transform .32s ease, opacity .32s ease',
+    }
+  }
+  if (snap.value) return { transform: 'translate(0,0)', transition: 'none' }
+  if (dragging.value) {
+    return {
+      transform: `translate(${dragX.value}px, ${dragY.value}px) rotate(${rot.value}deg)`,
+      transition: 'none',
+    }
+  }
+  return {
+    transform: `translate(${dragX.value}px, ${dragY.value}px) rotate(${rot.value}deg)`,
+    transition: 'transform .3s cubic-bezier(.2,.8,.3,1)',
+  }
+})
+
+function onPointerDown(e: PointerEvent) {
+  if (leaving.value) return
+  dragging.value = true
+  startX = e.clientX
+  startY = e.clientY
+  pointerId = e.pointerId
+  ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+}
+function onPointerMove(e: PointerEvent) {
+  if (!dragging.value || e.pointerId !== pointerId) return
+  dragX.value = e.clientX - startX
+  dragY.value = (e.clientY - startY) * 0.35
+}
+function onPointerUp(e: PointerEvent) {
+  if (!dragging.value || e.pointerId !== pointerId) return
+  dragging.value = false
+  pointerId = null
+  if (dragX.value > SWIPE_THRESHOLD) commit('next')
+  else if (dragX.value < -SWIPE_THRESHOLD) commit('pass')
+  else {
+    dragX.value = 0
+    dragY.value = 0
+  }
+}
+
+/** Fait sortir la carte puis applique l'action (swipe ou bouton). */
+function commit(action: 'next' | 'pass') {
+  if (leaving.value) return
+  leaving.value = action
+  buzz(action)
+  window.setTimeout(() => {
+    snap.value = true
+    leaving.value = null
+    dragX.value = 0
+    dragY.value = 0
+    if (action === 'next') game.next()
+    else game.pass()
+    requestAnimationFrame(() => (snap.value = false))
+  }, 300)
+}
+
+function onBack() {
+  if (!game.canGoBack.value) return
+  buzz('tap')
+  game.back()
+}
+
+// ── Favoris ──────────────────────────────────────────────────────────────
+function onFavorite() {
+  const added = game.toggleFavorite()
+  buzz(added ? 'favorite' : 'tap')
+}
+
+// ── Annonce des gages ──────────────────────────────────────────────────────
+const gageFlash = ref(false)
+let gageTimer: ReturnType<typeof setTimeout> | null = null
+watch(cardKey, () => {
+  if (game.currentCard.value?.category === 'gage') {
+    gageFlash.value = true
+    buzz('gage')
+    if (gageTimer) clearTimeout(gageTimer)
+    gageTimer = setTimeout(() => (gageFlash.value = false), 1500)
+  } else {
+    gageFlash.value = false
+  }
+})
 
 // Easter egg : 5 taps sur le petit titre → carte cachée.
 const titleTaps = ref(0)
@@ -34,6 +143,7 @@ const coldTeases = [
 ]
 function iAmCold() {
   coldMessage.value = coldTeases[Math.floor(Math.random() * coldTeases.length)]
+  buzz('tap')
   setTimeout(() => (coldMessage.value = ''), 3600)
 }
 </script>
@@ -60,26 +170,52 @@ function iAmCold() {
 
     <!-- Carte -->
     <main class="stage">
-      <Transition name="flip" mode="out-in">
+      <div
+        class="card-swipe"
+        :style="swipeStyle"
+        @pointerdown="onPointerDown"
+        @pointermove="onPointerMove"
+        @pointerup="onPointerUp"
+        @pointercancel="onPointerUp"
+      >
         <GameCard
           v-if="game.currentCard.value"
-          :key="game.currentCard.value.id"
+          :key="cardKey"
           :card="game.currentCard.value"
+          class="dealt"
         />
+        <div class="swipe-stamp next" :class="{ show: hintNext }">SUIVANT →</div>
+        <div class="swipe-stamp pass" :class="{ show: hintPass }">← PASSER</div>
+      </div>
+
+      <!-- Bouton favori -->
+      <button
+        v-if="game.currentCard.value"
+        class="fav"
+        :class="{ on: game.currentIsFavorite.value }"
+        :aria-pressed="game.currentIsFavorite.value"
+        aria-label="Mettre en favori"
+        @click="onFavorite"
+      >
+        ♥
+      </button>
+
+      <!-- Annonce de gage -->
+      <Transition name="gage">
+        <div v-if="gageFlash" class="gage-flash">
+          <span class="gage-emoji">🎭</span>
+          <span class="gage-word">Gage</span>
+        </div>
       </Transition>
     </main>
 
     <!-- Commandes -->
     <div class="controls">
-      <button
-        class="btn btn-ghost ctrl"
-        :disabled="!game.canGoBack.value"
-        @click="game.back()"
-      >
+      <button class="btn btn-ghost ctrl" :disabled="!game.canGoBack.value" @click="onBack">
         ↩ Retour
       </button>
-      <button class="btn btn-ghost ctrl" @click="game.pass()">Passer</button>
-      <button class="btn btn-gold ctrl" @click="game.next()">Suivant →</button>
+      <button class="btn btn-ghost ctrl" @click="commit('pass')">Passer</button>
+      <button class="btn btn-gold ctrl" @click="commit('next')">Suivant →</button>
     </div>
 
     <div class="subrow">
@@ -175,6 +311,135 @@ function iAmCold() {
   position: relative;
   min-height: 0;
 }
+.card-swipe {
+  flex: 1;
+  display: flex;
+  position: relative;
+  min-height: 0;
+  touch-action: pan-y;
+  will-change: transform;
+}
+
+/* Entrée de carte : « deal-in ». */
+.dealt {
+  animation: cardIn 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Tampons SUIVANT / PASSER pendant le swipe. */
+.swipe-stamp {
+  position: absolute;
+  top: 30px;
+  padding: 7px 16px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  font-size: 1.05rem;
+  border-radius: 12px;
+  border: 3px solid;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  z-index: 4;
+  pointer-events: none;
+}
+.swipe-stamp.next {
+  right: 22px;
+  color: var(--gold);
+  border-color: var(--gold);
+  transform: rotate(12deg);
+}
+.swipe-stamp.pass {
+  left: 22px;
+  color: var(--text-soft);
+  border-color: var(--text-soft);
+  transform: rotate(-12deg);
+}
+.swipe-stamp.show {
+  opacity: 0.95;
+}
+
+/* Bouton favori, posé en haut à droite de la scène. */
+.fav {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--text-dim);
+  border: 1px solid var(--border-hi);
+  background: rgba(20, 8, 16, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 6;
+  transition: transform 0.15s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.fav:active {
+  transform: scale(0.88);
+}
+.fav.on {
+  color: var(--rose);
+  border-color: color-mix(in srgb, var(--rose) 55%, transparent);
+  animation: favPop 0.4s ease;
+}
+@keyframes favPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Annonce de gage. */
+.gage-flash {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 8;
+  pointer-events: none;
+}
+.gage-flash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 50% at 50% 50%, color-mix(in srgb, var(--c-gage) 34%, transparent), transparent 70%);
+}
+.gage-emoji {
+  font-size: 3.6rem;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.5));
+  animation: gageBounce 0.6s ease;
+}
+.gage-word {
+  font-family: var(--font-title);
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-gage);
+  text-shadow: 0 2px 20px color-mix(in srgb, var(--c-gage) 60%, transparent);
+}
+@keyframes gageBounce {
+  0% { transform: scale(0.4) rotate(-12deg); }
+  55% { transform: scale(1.18) rotate(8deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+.gage-enter-active { transition: opacity 0.2s ease; }
+.gage-leave-active { transition: opacity 0.5s ease; }
+.gage-enter-from,
+.gage-leave-to { opacity: 0; }
 
 .controls {
   display: grid;

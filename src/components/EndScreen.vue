@@ -1,6 +1,15 @@
 <script setup lang="ts">
-defineProps<{ playedCount: number }>()
+import type { Card } from '../types'
+import { CATEGORIES } from '../data/cards'
+
+const props = defineProps<{ playedCount: number; favorites?: Card[] }>()
 defineEmits<{ replay: [] }>()
+
+const favs = () => props.favorites ?? []
+
+function meta(c: Card) {
+  return CATEGORIES[c.category]
+}
 </script>
 
 <template>
@@ -19,9 +28,26 @@ defineEmits<{ replay: [] }>()
         précieux. Reste au chaud contre moi, surtout toi.
       </p>
 
-      <div class="stat">
-        <span class="stat-num">{{ playedCount }}</span>
-        <span class="stat-label">carte{{ playedCount > 1 ? 's' : '' }} partagée{{ playedCount > 1 ? 's' : '' }}</span>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-num">{{ playedCount }}</span>
+          <span class="stat-label">carte{{ playedCount > 1 ? 's' : '' }} partagée{{ playedCount > 1 ? 's' : '' }}</span>
+        </div>
+        <div v-if="favs().length" class="stat">
+          <span class="stat-num">{{ favs().length }}</span>
+          <span class="stat-label">coup{{ favs().length > 1 ? 's' : '' }} de cœur</span>
+        </div>
+      </div>
+
+      <!-- Coups de cœur de la soirée -->
+      <div v-if="favs().length" class="favs">
+        <p class="favs-title">Tes coups de cœur 💛</p>
+        <ul class="favs-list">
+          <li v-for="c in favs()" :key="c.id" class="fav-item" :style="{ '--accent': meta(c).color }">
+            <span class="fav-dot" />
+            <span class="fav-text">{{ c.text }}</span>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -77,6 +103,12 @@ defineEmits<{ replay: [] }>()
   line-height: 1.65;
   max-width: 420px;
 }
+.stats-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 .stat {
   display: flex;
   flex-direction: column;
@@ -98,6 +130,57 @@ defineEmits<{ replay: [] }>()
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-dim);
+}
+
+/* Coups de cœur */
+.favs {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.favs-title {
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.favs-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 32vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.fav-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+}
+.fav-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 7px;
+  flex: 0 0 auto;
+  box-shadow: 0 0 8px var(--accent);
+}
+.fav-text {
+  flex: 1;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--text);
+  white-space: pre-line;
 }
 
 .end-foot {

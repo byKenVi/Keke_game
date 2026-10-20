@@ -73,6 +73,8 @@ body {
 }
 
 #app {
+  position: relative;
+  isolation: isolate; /* contexte d'empilement : le halo reste derrière les écrans */
   /* Dégradé romantique multi-points + voile sombre. */
   background:
     radial-gradient(120% 80% at 18% 0%, rgba(199, 109, 139, 0.18), transparent 55%),
@@ -80,6 +82,26 @@ body {
     radial-gradient(120% 100% at 50% 110%, rgba(227, 194, 133, 0.1), transparent 60%),
     linear-gradient(160deg, var(--bg-1) 0%, var(--bg-0) 45%, var(--bg-2) 100%);
   min-height: 100%;
+  overflow: hidden;
+}
+/* Halos qui dérivent lentement : donne de la vie au fond, sans distraire. */
+#app::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: -1; /* au-dessus du fond de #app, sous les écrans */
+  background:
+    radial-gradient(38% 30% at 20% 25%, rgba(199, 109, 139, 0.22), transparent 70%),
+    radial-gradient(34% 28% at 82% 70%, rgba(120, 90, 200, 0.2), transparent 70%),
+    radial-gradient(30% 26% at 60% 95%, rgba(227, 194, 133, 0.14), transparent 70%);
+  filter: blur(14px);
+  animation: aurora 26s ease-in-out infinite alternate;
+}
+@keyframes aurora {
+  0% { transform: translate3d(-3%, -2%, 0) scale(1.05) rotate(0deg); }
+  50% { transform: translate3d(3%, 2%, 0) scale(1.12) rotate(4deg); }
+  100% { transform: translate3d(-2%, 3%, 0) scale(1.06) rotate(-3deg); }
 }
 
 /* Conteneur plein écran, centré, largeur téléphone max. */

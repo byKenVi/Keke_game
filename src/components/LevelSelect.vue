@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { Level } from '../types'
 import { ESCALATE_EVERY } from '../config'
+import { useHaptics } from '../composables/useHaptics'
+
+const haptics = useHaptics()
 
 defineProps<{
   level: Level
@@ -56,6 +59,19 @@ const options: { value: Level; emoji: string; title: string; desc: string }[] = 
         type="checkbox"
         :checked="autoEscalate"
         @change="emit('toggleAuto', ($event.target as HTMLInputElement).checked)"
+      />
+      <span class="switch" aria-hidden="true"></span>
+    </label>
+
+    <label class="auto">
+      <span class="auto-text">
+        <span class="auto-title">Vibrations</span>
+        <span class="auto-desc">Léger retour haptique sur le téléphone (tirage, gage, favori).</span>
+      </span>
+      <input
+        type="checkbox"
+        :checked="haptics.enabled.value"
+        @change="haptics.setEnabled(($event.target as HTMLInputElement).checked)"
       />
       <span class="switch" aria-hidden="true"></span>
     </label>
