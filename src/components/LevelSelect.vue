@@ -84,8 +84,12 @@ const options: { value: Level; emoji: string; title: string; desc: string }[] = 
 
 <style scoped>
 .level {
-  justify-content: center;
+  /* `safe center` : centré quand il y a la place, sinon aligné en haut et
+     scrollable (jamais de contenu coupé sur petit écran). */
+  justify-content: safe center;
   gap: 22px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .level.compact {
   position: static;

@@ -36,16 +36,21 @@ const emit = defineEmits<{ start: [] }>()
 
 <style scoped>
 .intro {
-  justify-content: space-between;
+  justify-content: flex-start;
   text-align: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .intro-body {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  gap: 22px;
+  /* Prend la place dispo (contenu centré) mais ne se laisse jamais
+     écraser : sur écran court, on scrolle au lieu de couper le bouton. */
+  flex: 1 0 auto;
+  gap: clamp(14px, 3.2vh, 22px);
+  padding: 12px 0;
 }
 .eyebrow {
   font-size: 0.78rem;
@@ -109,6 +114,8 @@ const emit = defineEmits<{ start: [] }>()
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  flex: 0 0 auto;
+  padding-top: 8px;
 }
 .start {
   width: 100%;

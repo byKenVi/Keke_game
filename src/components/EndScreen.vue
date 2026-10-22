@@ -76,16 +76,19 @@ function meta(c: Card) {
 
 <style scoped>
 .end {
-  justify-content: space-between;
+  justify-content: flex-start;
   text-align: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .end-body {
-  flex: 1;
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 22px;
+  gap: clamp(14px, 3vh, 22px);
+  padding: 12px 0;
 }
 .eyebrow {
   font-size: 0.76rem;
@@ -188,6 +191,8 @@ function meta(c: Card) {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  flex: 0 0 auto;
+  padding-top: 8px;
 }
 .replay {
   width: 100%;
