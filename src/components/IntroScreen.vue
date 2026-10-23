@@ -16,7 +16,7 @@ const emit = defineEmits<{ start: [] }>()
            Petit mot de Kevin (modifie ce texte à ta guise).
            ───────────────────────────────────────────────────────────── -->
       <p class="note">
-        J'espère que tu es prête à jouer, mon chou.
+        J'espère que tu es prête à jouer.
       </p>
 
       <div class="rule">
