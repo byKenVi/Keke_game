@@ -8,14 +8,14 @@
  *   false = le jeu fonctionne normalement.
  * Pour réactiver le jeu le jour J : repasse cette valeur à `false`.
  */
-export const SITE_LOCKED = true
+export const SITE_LOCKED = false
 
 /** Message affiché quand le site est verrouillé. */
 export const LOCKED_MESSAGE =
   'Non Kékéli, tu ne joueras pas sans moi. Prochaine activation à notre prochaine rencontre.'
 
 /** Code d'accès de l'écran de verrouillage. Change-le si besoin. */
-export const ACCESS_CODE = '2105'
+export const ACCESS_CODE = '0306'
 
 /**
  * Code de l'outil de vérification des cartes (page /verification).

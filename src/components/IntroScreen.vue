@@ -16,9 +16,10 @@ const emit = defineEmits<{ start: [] }>()
            Petit mot de Kevin (modifie ce texte à ta guise).
            ───────────────────────────────────────────────────────────── -->
       <p class="note">
-        J'ai codé ce petit jeu rien que pour nous. Pas de score, pas de
-        gagnant : juste toi, moi, et l'envie de se découvrir encore un peu
-        plus ce soir. Prends ton temps, ris, rougis si tu veux.
+        On remet ça, mon chou. J'ai repris le jeu de zéro et trié chaque
+        carte à la main pour ne garder que nous deux dedans. Toujours pas de
+        score, pas de gagnant : juste toi, moi, et l'envie de te découvrir
+        encore un peu plus ce soir. Prends ton temps, ris, rougis si tu veux.
       </p>
 
       <div class="rule">
